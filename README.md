@@ -4,7 +4,10 @@
 -------------------------------------------------------------------
 | Method                     | Real       | User      | Sys       |
 |----------------------------|------------|-----------|-----------|
-| sqlDumpAndExec             | 4m51.927s  | 5m18.130s | 0m5.070s  |
+| sqlDumpAndExec (full)      | 4m51.927s  | 5m18.130s | 0m5.070s  |
+| sqlDumpAndExec (read to /dev/null) | 0m21.239s | 0m32.290s | 0m0.880s |
+| sqlDumpAndExec (read to file)      | 0m29.755s | 0m32.290s | 0m0.880s |
+| sqlDumpAndExec (write from file)   | 4m49.877s | 4m43.050s | 0m2.570s |
 | sqlalchemy1                | gave up after 8 min |  |           |
 | sqlalchemyBulkInsert 200   | 14m54.983s | 7m42.980s | 0m19.990s |
 | sqlalchemyBulkInsert 2000  | 8m13.869s  | 6m44.830s | 0m3.770s  |
