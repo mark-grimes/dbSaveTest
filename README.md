@@ -1,9 +1,9 @@
 # Speed tests on converting MySQL database to SQLite
 
 
-------------------------------------------------------------------
-| Method                     | Real       | User      | Sys       |
 -------------------------------------------------------------------
+| Method                     | Real       | User      | Sys       |
+|----------------------------|------------|-----------|-----------|
 | sqlDumpAndExec             | 4m51.927s  | 5m18.130s | 0m5.070s  |
 | sqlalchemy1                | gave up after 8 min |  |           |
 | sqlalchemyBulkInsert 200   | 14m54.983s | 7m42.980s | 0m19.990s |
