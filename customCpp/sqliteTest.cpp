@@ -79,8 +79,8 @@ const char* liteResultCodeToString( int result )
 		case SQLITE_IOERR_MMAP: return "SQLITE_IOERR_MMAP";
 		case SQLITE_IOERR_GETTEMPPATH: return "SQLITE_IOERR_GETTEMPPATH";
 		case SQLITE_IOERR_CONVPATH: return "SQLITE_IOERR_CONVPATH";
-		case SQLITE_IOERR_VNODE: return "SQLITE_IOERR_VNODE";
-		case SQLITE_IOERR_AUTH: return "SQLITE_IOERR_AUTH";
+		//case SQLITE_IOERR_VNODE: return "SQLITE_IOERR_VNODE";
+		//case SQLITE_IOERR_AUTH: return "SQLITE_IOERR_AUTH";
 		case SQLITE_LOCKED_SHAREDCACHE: return "SQLITE_LOCKED_SHAREDCACHE";
 		case SQLITE_BUSY_RECOVERY: return "SQLITE_BUSY_RECOVERY";
 		case SQLITE_BUSY_SNAPSHOT: return "SQLITE_BUSY_SNAPSHOT";
@@ -108,7 +108,7 @@ const char* liteResultCodeToString( int result )
 		case SQLITE_NOTICE_RECOVER_ROLLBACK: return "SQLITE_NOTICE_RECOVER_ROLLBACK";
 		case SQLITE_WARNING_AUTOINDEX: return "SQLITE_WARNING_AUTOINDEX";
 		case SQLITE_AUTH_USER: return "SQLITE_AUTH_USER";
-		case SQLITE_OK_LOAD_PERMANENTLY: return "SQLITE_OK_LOAD_PERMANENTLY";
+		//case SQLITE_OK_LOAD_PERMANENTLY: return "SQLITE_OK_LOAD_PERMANENTLY";
 		default: return "<unknown>";
 	}
 }
@@ -622,7 +622,7 @@ int preparedStatement( int argc, char* argv[] )
 
 int mySQLTest()
 {
-	MySQLDatabase inputDatabase( "192.168.99.100", "root", "root", "ethoscope_db" );
+	MySQLDatabase inputDatabase( "localhost", "ethoscope", "ethoscope", "ethoscope_db" );
 	SQLiteDatabase outputDatabase( "testdb.sqlite" );
 	outputDatabase.execute("PRAGMA synchronous=OFF");
 	outputDatabase.execute("PRAGMA count_changes=OFF");
@@ -654,7 +654,7 @@ int mySQLTest()
 			}*/
 			std::vector<MYSQL_BIND> results(numberOfFields);
 			std::vector<std::vector<char>> buffers(numberOfFields);
-			std::vector<size_t> lengths(numberOfFields);
+			std::vector<long unsigned int> lengths(numberOfFields);
 			std::string createStatementSQL("CREATE TABLE '"+tableName+"'(");
 			for( int columnNameIndex=0; columnNameIndex<numberOfFields; ++columnNameIndex )
 			{
