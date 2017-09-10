@@ -241,7 +241,7 @@ void SQLiteDatabase::execute( const char* pCommand, std::function<bool(int,int,c
 
 void SQLiteDatabase::execute_( const char* pCommand, void* userCallback )
 {
-	std::cout << "Executing command " << pCommand << std::endl;
+	//std::cout << "Executing command " << pCommand << std::endl;
 	char* pErrorMsg=0;
 	int result=sqlite3_exec( pDatabase_, pCommand, (userCallback ? callback_ : nullptr), userCallback, &pErrorMsg );
 	if( result!=SQLITE_OK )
@@ -394,7 +394,7 @@ MySQLDatabase::~MySQLDatabase()
 
 void MySQLDatabase::execute( const char* pCommand )
 {
-	std::cout << "Executing command " << pCommand << std::endl;
+	//std::cout << "Executing command " << pCommand << std::endl;
 	if( mysql_query( pDatabase_, pCommand ) )
 	{
 		throw std::runtime_error( std::string("Error performing query: ")+mysql_error(pDatabase_) );
@@ -620,10 +620,10 @@ int preparedStatement( int argc, char* argv[] )
 	return 0;
 }
 
-int mySQLTest()
+int mySQLBackup( const char* host, const char* user, const char* password, const char* database, const char* outputFile )
 {
-	MySQLDatabase inputDatabase( "localhost", "ethoscope", "ethoscope", "ethoscope_db" );
-	SQLiteDatabase outputDatabase( "testdb.sqlite" );
+	MySQLDatabase inputDatabase( host, user, password, database );
+	SQLiteDatabase outputDatabase( outputFile );
 	outputDatabase.execute("PRAGMA synchronous=OFF");
 	outputDatabase.execute("PRAGMA count_changes=OFF");
 	outputDatabase.execute("PRAGMA journal_mode=MEMORY");
@@ -636,7 +636,7 @@ int mySQLTest()
 		for( int fieldIndex=0; fieldIndex<tableNamesResult.numberOfFields(); ++fieldIndex )
 		{
 			std::string tableName(tableNames[fieldIndex]);
-			std::cout << "Table " << tableName << "\n";
+			std::cout << "Table " << tableName << std::endl;
 
 			auto selectStatement=inputDatabase.prepareStatement( (std::string("SELECT * FROM ")+tableName).c_str() );
 			if( mysql_stmt_execute(selectStatement)!=0 ) throw std::runtime_error("Failed executing select statement");
@@ -702,13 +702,20 @@ int mySQLTest()
 	} // end of loop over table names
 } // end of function mySQLTest
 
-int main( int argc, char* argv[] )
+int main( int argc, const char* argv[] )
 {
 	std::cout.sync_with_stdio(false);
-	std::cout << "Program starting" << std::endl;
 	try
 	{
-		mySQLTest();
+		const char* defaultArgs[]={ "localhost", "ethoscope", "ethoscope", "ethoscope_db", "testdb.sqlite" };
+		const char** args[]={ &defaultArgs[0], &defaultArgs[1], &defaultArgs[2], &defaultArgs[3], &defaultArgs[4] };
+		for( int index=1; index<argc; ++index ) args[index-1]=&argv[index];
+		std::cout << "Database host     = " << *args[0] << "\n"
+			<< "Database username = " << *args[1] << "\n"
+			<< "Database password = " << *args[2] << "\n"
+			<< "Database database = " << *args[3] << "\n"
+			<< "Output filename   = " << *args[4] << "\n";
+		mySQLBackup( *args[0], *args[1], *args[2], *args[3], *args[4] );
 	}
 	catch( const std::exception& error )
 	{
@@ -716,6 +723,5 @@ int main( int argc, char* argv[] )
 		return -1;
 	}
 
-	std::cout << "Program finished" << std::endl;
 	return 0;
 }
