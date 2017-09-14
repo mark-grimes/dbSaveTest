@@ -185,6 +185,16 @@ template<> void SQLiteStatement::bind( const char* value, int position )
 	}
 }
 
+/// Note that this function is for MYSQL_TYPE_TINY, i.e. a single byte, not a pointer to an array of bytes
+template<> void SQLiteStatement::bind( const signed char value, int position )
+{
+	int result;
+	if( (result=sqlite3_bind_int( pStatement_, position, value ))!=SQLITE_OK )
+	{
+		throw std::runtime_error( std::string("Can't bind signed char to SQLiteStatement: ")+liteResultCodeToString(result) );
+	}
+}
+
 template<> void SQLiteStatement::bind( const void* value, int position, int size )
 {
 	int result;
@@ -519,7 +529,7 @@ void bindToSQLite( const MYSQL_BIND& bind, SQLiteStatement& statement, const int
 {
 	switch( bind.buffer_type )
 	{
-		//case MYSQL_TYPE_TINY: stream << (signed char*)buffer.bind_.buffer; break;
+		case MYSQL_TYPE_TINY: statement.bind( *(signed char*)bind.buffer, fieldNumber+1 ); break;
 		case MYSQL_TYPE_SHORT: statement.bind( *(short int*)bind.buffer, fieldNumber+1 ); break;
 		case MYSQL_TYPE_INT24: statement.bind( *(int*)bind.buffer, fieldNumber+1 ); break;
 		case MYSQL_TYPE_LONG: statement.bind( *(int*)bind.buffer, fieldNumber+1 ); break;
@@ -573,7 +583,7 @@ const char* sqlTypeString( const MYSQL_FIELD& field )
 {
 	switch( field.type )
 	{
-		case MYSQL_TYPE_TINY: return "INT";
+		case MYSQL_TYPE_TINY: return "TINY INT";
 		case MYSQL_TYPE_SHORT: return "SHORT";
 		case MYSQL_TYPE_INT24: return "LONG INT";
 		case MYSQL_TYPE_LONG: return "LONG";
