@@ -33,7 +33,7 @@ can't be compared to the table above.
 --------------------------------------------------------------------
 
 Interestingly the docker container adds a slight overhead; this time doesn't include spinning up the container.
-I suspect this is either better compiler optimisation or performance of the docker I/O driver. It's minimal
-compared to the code differences so I can't be bothered figuring out more details.
+I suspect this is either better compiler optimisation or performance of the docker I/O driver (RAW in v17.12.0-ce).
+It's minimal compared to the differences from the code so I can't be bothered figuring out more details.
 
 sqlpp11 doesn't copy all the data either. See the readme in that folder.
