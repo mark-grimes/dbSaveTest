@@ -534,7 +534,7 @@ void bindToSQLite( const MYSQL_BIND& bind, SQLiteStatement& statement, const int
 		case MYSQL_TYPE_INT24: statement.bind( *(int*)bind.buffer, fieldNumber+1 ); break;
 		case MYSQL_TYPE_LONG: statement.bind( *(int*)bind.buffer, fieldNumber+1 ); break;
 		//case MYSQL_TYPE_LONGLONG: statement.bind( *(long long int*)bind.buffer, fieldNumber ); break;
-		case MYSQL_TYPE_FLOAT: statement.bind( *(float*)bind.buffer, fieldNumber ); break;
+		case MYSQL_TYPE_FLOAT: statement.bind( *(float*)bind.buffer, fieldNumber+1 ); break;
 		case MYSQL_TYPE_DOUBLE: statement.bind( *(double*)bind.buffer, fieldNumber+1 ); break;
 		//case MYSQL_TYPE_NEWDECIMAL: stream << (char*)buffer.bind_.buffer; break;//stream << (char[]*)buffer.bind_.buffer; break;
 		//case MYSQL_TYPE_TIME: stream << (MYSQL_TIME*)buffer.bind_.buffer; break;
