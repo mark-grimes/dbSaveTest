@@ -9,6 +9,8 @@ In my current test, it's about 6 times slower than customCpp but I'm still learn
 not be using it optimally. It also doesn't currently copy all tables since I have to code it statically
 rather than have it loop over the input database tables dynamically at run time.
 
+I have no intention to improve any of the code or scripts since it's a long way of the customCpp performance.
+
 Note that the numbers below are on different hardware than for the times in the root README.
 
 -------------------------------------------------------------------
